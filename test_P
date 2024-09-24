@@ -1,0 +1,66 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue May 21 11:09:45 2024
+
+@author: Tj - Christian
+"""
+
+import pandas as pd
+
+# Cargar datos
+data = pd.read_csv('timebill_y19_y23.csv')
+data['hours'] = pd.to_timedelta(data['hours'])
+
+def horas_por_proyecto(data):
+    horas_proyecto = data.groupby('job_id')['hours'].sum()
+    return horas_proyecto
+
+def horas_facturables_vs_no_facturables(data):
+    facturables = data[data['isbillable'] == 1]['hours'].sum()
+    no_facturables = data[data['isbillable'] == 0]['hours'].sum()
+    return facturables, no_facturables
+
+def rendimiento_empleados(data):
+    horas_empleado = data.groupby('employee')['hours'].sum()
+    return horas_empleado
+
+def analisis_temporal(data):
+    data['trandate'] = pd.to_datetime(data['trandate'])
+    horas_por_mes = data.groupby(data['trandate'].dt.to_period('M'))['hours'].sum()
+    return horas_por_mes
+
+def categorias_tareas(data):
+    horas_categoria = data.groupby('task')['hours'].sum()
+    horas_actividad = data.groupby('activity_perf')['hours'].sum()
+    return horas_categoria, horas_actividad
+
+
+
+# Ejecutar análisis
+facturables, no_facturables = horas_facturables_vs_no_facturables(data)
+print("Horas facturables:", facturables)
+print("Horas no facturables:", no_facturables)
+
+# Ejecutar análisis
+horas_empleado = rendimiento_empleados(data)
+print(horas_empleado)
+
+# Ejecutar análisis
+horas_por_mes = analisis_temporal(data)
+print(horas_por_mes)
+
+# Ejecutar análisis
+horas_proyecto = horas_por_proyecto(data)
+print(horas_proyecto)
+
+# Ejecutar análisis
+horas_categoria, horas_actividad = categorias_tareas(data)
+print("Horas por Categoría:")
+print(horas_categoria)
+print("Horas por Actividad:")
+print(horas_actividad)
+
+# Ejecutar análisis
+horas_proyecto = horas_por_proyecto(data)
+print(horas_proyecto)
+
