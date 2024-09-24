@@ -64,3 +64,9 @@ print(horas_actividad)
 horas_proyecto = horas_por_proyecto(data)
 print(horas_proyecto)
 
+grafico = horas_por_mes.plot(kind='bar', title='Horas por mes')
+grafico.set_xlabel('Mes')
+grafico.set_ylabel('Horas')
+grafico.get_figure().savefig('horas_por_mes.png')
+grafico.get_figure().show()
+
